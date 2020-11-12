@@ -1,7 +1,8 @@
 base {
   log_debug = off;
   log_info = on;
-  log = "stderr";
+  //log = "stderr";
+  log = "file:/var/log/redsocks/proxy.log";
   daemon = off;
   user = redsocks;
   group = redsocks;
@@ -15,6 +16,8 @@ redsocks {
   type = http-relay;
   ip = ${proxy_ip};
   port = ${proxy_port};
+  login = ${proxy_user};                                                     
+  password = ${proxy_password};
 }
 
 redsocks {
@@ -24,4 +27,6 @@ redsocks {
   type = http-connect;
   ip = ${proxy_ip};
   port = ${proxy_port};
+  login = ${proxy_user};                                                     
+  password = ${proxy_password};
 }
