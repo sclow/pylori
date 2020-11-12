@@ -1,7 +1,4 @@
-# Redsocks Docker image
-
-[![Image size](https://img.shields.io/imagelayers/image-size/ncarlier/redsocks/latest.svg)](https://hub.docker.com/r/ncarlier/redsocks/)
-[![Docker pulls](https://img.shields.io/docker/pulls/ncarlier/redsocks.svg)](https://hub.docker.com/r/ncarlier/redsocks/)
+# Pylori - A Digest Proxy Authentication tool
 
 ## Description
 
@@ -13,8 +10,14 @@ You have just to run this container and all your other containers will be able t
 
 Start the container like this:
 
+``` bash
+docker run --privileged=true --detach --name pylori sclow/pylori 1.2.3.4 3128 user password
 ```
-docker run --privileged=true --net=host -d ncarlier/redsocks 1.2.3.4 3128
+
+Once pylori has been configured you can subsequently launch it using the command:
+
+``` bash
+docker run  --privileged=true --detach --name pylori pylori:1.0
 ```
 
 Replace the IP and the port by those of your proxy.
@@ -26,20 +29,37 @@ You can forward all the TCP traffic regardless the interface by unset the `DOCKE
 If you want to add exception for an IP or a range of IP you can edit the allowlist file.
 Once edited you can replace this file into the container by mounting it:
 
-```
+``` bash
 docker run --privileged=true --net=host \
   -v allowlist.txt:/etc/redsocks-allowlist.txt \
-  -d ncarlier/redsocks 1.2.3.4 3128
+  -d sclow/pylori 1.2.3.4 3128
 ```
 
 Use docker stop to halt the container. The iptables rules should be reversed. If not, you can execute this command:
 
-```
+``` bash
 iptables-save | grep -v REDSOCKS | iptables-restore
 ```
 
 ## Build
 
+### Create Image
+
+To create the Pylori Image from within the checked out repository run:
+
+``` bash
+docker build --tag pylori:1.0 .
+```
+
+### Old
+
 Build the image with `make`.
 
 > Use `make help` to see available commands for this image.
+
+## Original Work
+
+This has been based on the Redsocks Docker image by NCalier, please credit the original!
+
+[![Image size](https://img.shields.io/imagelayers/image-size/ncarlier/redsocks/latest.svg)](https://hub.docker.com/r/ncarlier/redsocks/)
+[![Docker pulls](https://img.shields.io/docker/pulls/ncarlier/redsocks.svg)](https://hub.docker.com/r/ncarlier/redsocks/)
