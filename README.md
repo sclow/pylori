@@ -11,13 +11,13 @@ You have just to run this container and all your other containers will be able t
 Start the container like this:
 
 ``` bash
-docker run --privileged=true --detach --name pylori sclow/pylori 1.2.3.4 3128 user password
+docker run --privileged=true --detach --name pylori psyclow/pylori 1.2.3.4 3128 user password
 ```
 
 Once pylori has been configured you can subsequently launch it using the command:
 
 ``` bash
-docker run  --privileged=true --detach --name pylori pylori:1.0
+docker run  --privileged=true --detach --name pylori psyclow/pylori
 ```
 
 Replace the IP and the port by those of your proxy.
