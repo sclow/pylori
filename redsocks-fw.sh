@@ -10,7 +10,7 @@ fw_setup() {
   # Next we used "-j ACCEPT" rules for the networks we don't want to use a proxy.
   while read item; do
       iptables -t nat -A REDSOCKS -d $item -j ACCEPT
-  done < /etc/redsocks-allowlist.txt
+  done < /etc/redsocks/redsocks-allowlist.txt
 
   # We then told iptables to redirect all port 80 connections to the http-relay redsocks port and all other connections to the http-connect redsocks port.
   #iptables -t nat -A REDSOCKS -p tcp --dport 80 -j REDIRECT --to-ports 12345

@@ -1,6 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 redsocks_pid=0
 tinyproxy_pid=0
+REDSOCKS_BIN=`which redsocks`
+TINYPROXY_BIN=`which tinyproxy`
 pid=0
 
 write_config() {
@@ -9,7 +11,7 @@ write_config() {
         -e "s|\${proxy_port}|${proxy_port}|" \
         -e "s|\${proxy_user}|${proxy_user}|" \
         -e "s|\${proxy_password}|${proxy_password}|" \
-        /etc/redsocks.tmpl > /etc/redsocks.conf
+        /etc/redsocks/redsocks.tmpl > /etc/redsocks/redsocks.conf
 }
 
 if test $# -eq 4
@@ -23,7 +25,7 @@ then
 else
     # Not in configuration mode!
     # Check if a configuration file exists, if not create default
-    if [ ! -e /etc/redsocks.conf ] ; then
+    if [ ! -e /etc/redsocks/redsocks.conf ] ; then
         echo "No proxy config recived. No config file found, creating one."
         proxy_ip=proxy.ip.address
         proxy_port=3128
@@ -36,7 +38,7 @@ fi
 
 
 echo "Using Redsocks configuration:"
-cat /etc/redsocks.conf
+cat /etc/redsocks/redsocks.conf
 
 echo "Activating iptables rules..."
 /usr/local/bin/redsocks-fw.sh start
@@ -82,11 +84,11 @@ trap 'kill ${!}; usr_handler' SIGUSR1
 trap 'kill ${!}; term_handler' SIGTERM
 
 echo "Starting redsocks..."
-/usr/sbin/redsocks -c /etc/redsocks.conf &
+${REDSOCKS_BIN} -c /etc/redsocks/redsocks.conf &
 redsocks_pid="$!"
 
 echo "Starting tinyproxy..."
-/usr/bin/tinyproxy -c /etc/tinyproxy/tinyproxy.conf &
+${TINYPROXY_BIN} -c /etc/tinyproxy/tinyproxy.conf &
 tinyproxy_pid="$!"
 
 # wait indefinetely
